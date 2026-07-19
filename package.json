@@ -19,7 +19,7 @@
     "supabase:verify-admin-ops": "node scripts/verify-admin-ops.mjs",
     "supabase:verify-admin-storage": "node scripts/verify-admin-storage.mjs",
     "supabase:verify-e2e": "node scripts/verify-supabase-e2e.mjs",
-    "build:github-pages": "pnpm --filter @marvel-nexus/mobile exec expo export --platform web --output-dir dist-web --clear && node scripts/prepare-github-pages-build.mjs",
+    "build:github-pages": "node scripts/build-github-pages.mjs",
     "verify": "pnpm run typecheck && pnpm run lint && pnpm run test"
   },
   "dependencies": {

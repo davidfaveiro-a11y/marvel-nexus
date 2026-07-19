@@ -15,6 +15,7 @@ function findRootEnv(start: string) {
 }
 
 const rootEnvPath = findRootEnv(process.cwd());
+const baseUrl = process.env.EXPO_BASE_URL;
 
 if (rootEnvPath) {
   const rootEnv = readFileSync(rootEnvPath, "utf8");
@@ -47,6 +48,7 @@ const config: ExpoConfig = {
   plugins: ["expo-router", "expo-secure-store"],
   experiments: {
     typedRoutes: true,
+    ...(baseUrl ? { baseUrl } : {}),
   },
 };
 

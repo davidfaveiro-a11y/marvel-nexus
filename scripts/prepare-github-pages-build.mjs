@@ -5,15 +5,16 @@ import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const sourceDir = join(root, "apps", "mobile", "dist-web");
 const docsDir = join(root, "docs");
-const targetDir = join(docsDir, "app");
 
 if (!existsSync(sourceDir)) {
   throw new Error(`Missing Expo web export at ${sourceDir}. Run expo export first.`);
 }
 
-rmSync(targetDir, { force: true, recursive: true });
 mkdirSync(docsDir, { recursive: true });
-cpSync(sourceDir, targetDir, { recursive: true });
+for (const generatedEntry of ["_expo", "assets", "app", "404.html", "index.html", "metadata.json"]) {
+  rmSync(join(docsDir, generatedEntry), { force: true, recursive: true });
+}
+cpSync(sourceDir, docsDir, { recursive: true });
 
 const textExtensions = new Set([".css", ".html", ".js", ".json", ".map"]);
 
@@ -49,28 +50,20 @@ function walk(dir) {
   }
 }
 
-walk(targetDir);
+for (const generatedEntry of ["_expo", "assets", "index.html", "metadata.json"]) {
+  const fullPath = join(docsDir, generatedEntry);
+  if (existsSync(fullPath)) {
+    if (statSync(fullPath).isDirectory()) {
+      walk(fullPath);
+    } else {
+      patchAssetPaths(fullPath);
+    }
+  }
+}
 
-const appIndex = join(targetDir, "index.html");
-copyFileSync(appIndex, join(targetDir, "404.html"));
+const appIndex = join(docsDir, "index.html");
+copyFileSync(appIndex, join(docsDir, "404.html"));
 
 writeFileSync(join(docsDir, ".nojekyll"), "");
-writeFileSync(
-  join(docsDir, "index.html"),
-  `<!doctype html>
-<html lang="fr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="refresh" content="0; url=./app/">
-    <title>Marvel Nexus</title>
-    <script>location.replace("./app/" + location.search + location.hash);</script>
-  </head>
-  <body>
-    <a href="./app/">Ouvrir Marvel Nexus</a>
-  </body>
-</html>
-`,
-);
 
-console.log(`Prepared GitHub Pages app in ${targetDir}`);
+console.log(`Prepared GitHub Pages app in ${docsDir}`);
