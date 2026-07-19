@@ -100,6 +100,8 @@ async function createOrUpdatePlayer(player) {
   await deleteRows("xp_transactions", "player_id", [user.id]);
   await deleteRows("player_cards", "player_id", [user.id]);
   await deleteRows("pack_openings", "player_id", [user.id]);
+  await deleteRows("user_roles", "user_id", [user.id]);
+  await deleteRows("profiles", "id", [user.id]);
 
   const profilePayload = {
     id: user.id,
@@ -114,7 +116,7 @@ async function createOrUpdatePlayer(player) {
     next_pack_available_at: null,
     hide_leaderboard_stats: false,
   };
-  const profile = await admin.from("profiles").upsert(profilePayload, { onConflict: "id" });
+  const profile = await admin.from("profiles").insert(profilePayload);
   if (profile.error) throw profile.error;
 
   const role = await admin.from("user_roles").upsert({ user_id: user.id, role: "player" });
@@ -128,6 +130,12 @@ if (profilesResult.error) throw profilesResult.error;
 const usernameById = new Map(
   (profilesResult.data ?? []).map((profile) => [profile.id, profile.username]),
 );
+
+const adminProfile = await admin
+  .from("profiles")
+  .update({ hide_leaderboard_stats: true })
+  .eq("username", "admin");
+if (adminProfile.error) throw adminProfile.error;
 
 const usersBefore = await listAllUsers();
 const usersToDelete = usersBefore.filter((user) => {

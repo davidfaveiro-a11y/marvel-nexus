@@ -55,7 +55,7 @@ if (updateUser.error) throw updateUser.error;
 
 const profile = await supabase
   .from("profiles")
-  .upsert({ id: userId, username: "admin", status: "active" });
+  .upsert({ id: userId, username: "admin", status: "active", hide_leaderboard_stats: true });
 if (profile.error) throw profile.error;
 
 const role = await supabase.from("user_roles").upsert({ user_id: userId, role: "admin" });
