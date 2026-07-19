@@ -335,13 +335,14 @@ const styles = StyleSheet.create({
   playerLevel: { color: colors.muted, fontSize: 13, fontWeight: "800" },
   packStage: {
     alignItems: "center",
-    backgroundColor: "rgba(5, 7, 13, 0.46)",
-    borderColor: colors.text,
+    backgroundColor: "rgba(5, 7, 13, 0.64)",
+    borderColor: colors.yellow,
     borderRadius: radius.lg,
     borderWidth: 2,
-    minHeight: 238,
+    minHeight: 276,
     justifyContent: "center",
     overflow: "hidden",
+    paddingVertical: 16,
   },
   muted: { color: colors.muted, fontSize: 14, lineHeight: 20 },
   progressTrack: {
