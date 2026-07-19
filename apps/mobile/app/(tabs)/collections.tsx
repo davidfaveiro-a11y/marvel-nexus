@@ -20,6 +20,7 @@ type FilterMode = "all" | "owned" | "missing";
 export default function CollectionsScreen() {
   const [search, setSearch] = useState("");
   const [filterMode, setFilterMode] = useState<FilterMode>("all");
+  const [selectedCollectionId, setSelectedCollectionId] = useState<string | null>(null);
   const [selectedCard, setSelectedCard] = useState<CardSummary | null>(null);
   const collections = useQuery({ queryKey: ["collections"], queryFn: fetchCollections });
   const cards = useQuery({ queryKey: ["cards"], queryFn: fetchCards });
@@ -49,15 +50,23 @@ export default function CollectionsScreen() {
     const normalizedSearch = search.trim().toLowerCase();
     return (cards.data ?? []).filter((card) => {
       const owned = ownedByCardId.has(card.id);
+      const matchesCollection =
+        selectedCollectionId === null || card.collection_id === selectedCollectionId;
       const matchesFilter =
         filterMode === "all" ||
         (filterMode === "owned" && owned) ||
         (filterMode === "missing" && !owned);
-      const haystack = `${card.edition_name} ${card.characters?.name ?? ""} ${card.rarities?.name ?? ""}`;
+      const haystack = `${card.edition_name} ${card.characters?.name ?? ""} ${card.collections?.name ?? ""} ${
+        card.rarities?.name ?? ""
+      }`;
       const matchesSearch = !normalizedSearch || haystack.toLowerCase().includes(normalizedSearch);
-      return matchesFilter && matchesSearch;
+      return matchesCollection && matchesFilter && matchesSearch;
     });
-  }, [cards.data, filterMode, ownedByCardId, search]);
+  }, [cards.data, filterMode, ownedByCardId, search, selectedCollectionId]);
+
+  const selectedCollection = useMemo(() => {
+    return (collections.data ?? []).find((collection) => collection.id === selectedCollectionId);
+  }, [collections.data, selectedCollectionId]);
 
   return (
     <FlatList
@@ -84,8 +93,18 @@ export default function CollectionsScreen() {
           >
             {(collections.data ?? []).map((collection) => {
               const stats = collectionStats.get(collection.id);
+              const selected = selectedCollectionId === collection.id;
               return (
-                <View style={styles.collectionCard} key={collection.id}>
+                <Pressable
+                  accessibilityRole="button"
+                  key={collection.id}
+                  onPress={() => setSelectedCollectionId(selected ? null : collection.id)}
+                  style={({ pressed }) => [
+                    styles.collectionCard,
+                    selected ? styles.collectionCardActive : null,
+                    pressed ? styles.pressedCard : null,
+                  ]}
+                >
                   <View
                     style={[styles.collectionBlast, { backgroundColor: collection.primary_color }]}
                   />
@@ -102,7 +121,7 @@ export default function CollectionsScreen() {
                     <Text style={styles.progressValue}>{stats?.progress ?? 0}%</Text>
                   </View>
                   <ProgressBar color={collection.primary_color} value={stats?.progress ?? 0} />
-                </View>
+                </Pressable>
               );
             })}
           </ScrollView>
@@ -126,7 +145,10 @@ export default function CollectionsScreen() {
               </Pressable>
             ))}
           </View>
-          <Text style={styles.subtitle}>{filteredCards.length} cartes dans l'album</Text>
+          <Text style={styles.subtitle}>
+            {filteredCards.length} cartes
+            {selectedCollection ? ` / ${selectedCollection.name}` : " dans l'album"}
+          </Text>
         </View>
       }
       renderItem={({ item }) => {
@@ -156,6 +178,22 @@ export default function CollectionsScreen() {
                 <View style={[styles.rarityPill, { borderColor: rarityColor }]}>
                   <Text style={[styles.rarityText, { color: rarityColor }]}>
                     {item.rarities?.name ?? "Rarete"}
+                  </Text>
+                </View>
+                <View
+                  style={[
+                    styles.collectionPill,
+                    { borderColor: item.collections?.primary_color ?? colors.lineStrong },
+                  ]}
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={[
+                      styles.collectionPillText,
+                      { color: item.collections?.primary_color ?? colors.muted },
+                    ]}
+                  >
+                    {item.collections?.name ?? "Collection"}
                   </Text>
                 </View>
               </View>
@@ -319,6 +357,12 @@ const styles = StyleSheet.create({
     padding: 14,
     width: 232,
   },
+  collectionCardActive: {
+    borderColor: colors.yellow,
+    shadowColor: colors.yellow,
+    shadowOpacity: 0.32,
+    shadowRadius: 10,
+  },
   collectionBlast: {
     height: "160%",
     opacity: 0.34,
@@ -407,6 +451,15 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
   },
   rarityText: { fontSize: 10, fontWeight: "900", textTransform: "uppercase" },
+  collectionPill: {
+    borderRadius: 999,
+    borderWidth: 1,
+    flexShrink: 1,
+    maxWidth: 104,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  collectionPillText: { fontSize: 10, fontWeight: "900", textTransform: "uppercase" },
   name: { color: colors.text, fontSize: 17, fontWeight: "900", lineHeight: 21 },
   ownedBadge: {
     alignItems: "center",
