@@ -44,7 +44,7 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabMark color={color} focused={focused} name="home" />
           ),
-          title: "Jeu",
+          title: "Accueil",
         }}
       />
       <Tabs.Screen
@@ -53,7 +53,7 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabMark color={color} focused={focused} name="collections" />
           ),
-          title: "Album",
+          title: "Collections",
         }}
       />
       <Tabs.Screen
@@ -71,7 +71,7 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabMark color={color} focused={focused} name="profile" />
           ),
-          title: "Moi",
+          title: "Profil",
         }}
       />
       <Tabs.Screen
@@ -80,7 +80,7 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabMark color={color} focused={focused} name="settings" />
           ),
-          title: "Menu",
+          title: "Options",
         }}
       />
     </Tabs>
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 1,
   },
   tabLabel: {
-    fontSize: 9,
+    fontSize: 8,
     fontWeight: "900",
     marginTop: 1,
     textTransform: "uppercase",
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 1,
     overflow: "hidden",
-    width: 42,
+    width: 40,
   },
   iconShellActive: {
     backgroundColor: colors.surfaceHigh,
