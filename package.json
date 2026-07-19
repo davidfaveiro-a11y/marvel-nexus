@@ -1,0 +1,39 @@
+{
+  "name": "marvel-nexus",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.9.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:mobile": "pnpm --filter @marvel-nexus/mobile run start",
+    "dev:admin": "pnpm --filter @marvel-nexus/admin run dev",
+    "lint": "pnpm -r run lint",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "pnpm -r run test",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "supabase:create-dev-admin": "node scripts/create-dev-admin.mjs",
+    "supabase:verify-admin-ops": "node scripts/verify-admin-ops.mjs",
+    "supabase:verify-admin-storage": "node scripts/verify-admin-storage.mjs",
+    "supabase:verify-e2e": "node scripts/verify-supabase-e2e.mjs",
+    "build:github-pages": "pnpm --filter @marvel-nexus/mobile exec expo export --platform web --output-dir dist-web --clear && node scripts/prepare-github-pages-build.mjs",
+    "verify": "pnpm run typecheck && pnpm run lint && pnpm run test"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.52.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/parser": "^8.38.0",
+    "eslint": "^9.31.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.6.2",
+    "typescript-eslint": "^8.38.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}

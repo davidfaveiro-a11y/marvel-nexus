@@ -1,0 +1,7 @@
+-- Tests manuels recommandes avec Supabase CLI / pgTAP:
+-- 1. Un joueur anonyme ne peut lire aucune table de catalogue.
+-- 2. Un joueur actif peut lire les collections/cartes actives.
+-- 3. Un joueur ne peut pas inserer dans player_cards, xp_transactions ou pack_openings.
+-- 4. open_free_pack refuse une deuxieme ouverture avant 3 heures.
+-- 5. Deux appels concurrents avec deux idempotency keys ne doivent pas attribuer deux recompenses.
+-- 6. Un administrateur peut gerer invitations et cartes.

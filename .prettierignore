@@ -1,0 +1,9 @@
+node_modules
+dist
+build
+.next
+**/.next/**
+.expo
+coverage
+apps/**/next-env.d.ts
+supabase/**/*.sql

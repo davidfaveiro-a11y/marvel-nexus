@@ -1,0 +1,31 @@
+{
+  "name": "@marvel-nexus/admin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.1.1",
+    "@marvel-nexus/config": "workspace:*",
+    "@marvel-nexus/validation": "workspace:*",
+    "@supabase/supabase-js": "^2.52.1",
+    "next": "16.2.10",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "react-hook-form": "^7.60.0",
+    "zod": "^4.0.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^22.13.14",
+    "@types/react": "^19.0.14",
+    "@types/react-dom": "^19.0.6",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.8.3"
+  }
+}
