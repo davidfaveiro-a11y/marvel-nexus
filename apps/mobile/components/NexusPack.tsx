@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { colors, radius, shadows } from "../theme/tokens";
 
 const ultimateSpiderManImage =
-  "https://cdn.marvel.com/content/2x/ultimate_spider-man_3_cover_card.webp";
+  "https://cdn.marvel.com/content/2x/005smp_ons_mas_mob_01_0.webp";
 
 export function NexusPack({ compact = false }: { compact?: boolean }) {
   return (
@@ -15,7 +15,7 @@ export function NexusPack({ compact = false }: { compact?: boolean }) {
         <Image
           accessibilityLabel="Ultimate Spider-Man"
           contentFit="cover"
-          contentPosition={{ left: "50%", top: "0%" }}
+          contentPosition="center"
           source={{ uri: ultimateSpiderManImage }}
           style={styles.image}
         />
