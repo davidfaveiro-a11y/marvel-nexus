@@ -44,7 +44,7 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabMark color={color} focused={focused} name="home" />
           ),
-          title: "Accueil",
+          title: "Jeu",
         }}
       />
       <Tabs.Screen
@@ -53,7 +53,7 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabMark color={color} focused={focused} name="collections" />
           ),
-          title: "Collections",
+          title: "Album",
         }}
       />
       <Tabs.Screen
@@ -71,7 +71,7 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabMark color={color} focused={focused} name="profile" />
           ),
-          title: "Profil",
+          title: "Moi",
         }}
       />
       <Tabs.Screen
@@ -80,7 +80,7 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabMark color={color} focused={focused} name="settings" />
           ),
-          title: "Options",
+          title: "Menu",
         }}
       />
     </Tabs>
@@ -123,7 +123,11 @@ function TabGlyph({
               styles.gridTile,
               {
                 backgroundColor:
-                  focused && index === 0 ? colors.red : focused && index === 3 ? colors.yellow : color,
+                  focused && index === 0
+                    ? colors.red
+                    : focused && index === 3
+                      ? colors.yellow
+                      : color,
               },
             ]}
           />
@@ -165,7 +169,9 @@ function TabGlyph({
       <View style={styles.settingsGlyph}>
         <View style={[styles.knob, { borderColor: color }]} />
         <View style={[styles.sliderLine, { backgroundColor: color, top: 8 }]} />
-        <View style={[styles.sliderLine, { backgroundColor: focused ? colors.yellow : color, top: 18 }]} />
+        <View
+          style={[styles.sliderLine, { backgroundColor: focused ? colors.yellow : color, top: 18 }]}
+        />
       </View>
     );
   }
@@ -184,9 +190,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 1,
   },
   tabLabel: {
-    fontSize: 10,
+    fontSize: 9,
     fontWeight: "900",
-    marginTop: 2,
+    marginTop: 1,
     textTransform: "uppercase",
   },
   tabLabelActive: {
@@ -202,7 +208,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 1,
     overflow: "hidden",
-    width: 44,
+    width: 42,
   },
   iconShellActive: {
     backgroundColor: colors.surfaceHigh,

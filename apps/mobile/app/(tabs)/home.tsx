@@ -202,7 +202,6 @@ export default function HomeScreen() {
         <Metric label="Doubles" value={`${stats.data?.totalCopies ?? 0}`} />
         <Metric label="Top rarete" value={stats.data?.highestRarity ?? "-"} accent="violet" />
       </View>
-
     </ScrollView>
   );
 }
@@ -251,32 +250,33 @@ const styles = StyleSheet.create({
   },
   hero: {
     ...shadows.ambient,
-    backgroundColor: colors.blue,
-    borderColor: colors.text,
+    backgroundColor: colors.panelRaised,
+    borderColor: colors.lineStrong,
     borderRadius: radius.lg,
-    borderWidth: 2,
+    borderWidth: 1,
     gap: 16,
     overflow: "hidden",
     padding: 18,
   },
   heroRedSlash: {
     backgroundColor: colors.crimson,
-    height: 340,
-    left: -78,
+    height: 280,
+    left: -124,
+    opacity: 0.32,
     position: "absolute",
-    top: -80,
+    top: -92,
     transform: [{ rotate: "22deg" }],
-    width: 168,
+    width: 150,
   },
   heroYellowSlash: {
     backgroundColor: colors.yellow,
-    height: 170,
-    opacity: 0.96,
+    height: 220,
+    opacity: 0.12,
     position: "absolute",
-    right: -60,
-    top: 18,
+    right: -112,
+    top: -52,
     transform: [{ rotate: "-18deg" }],
-    width: 140,
+    width: 150,
   },
   heroCopy: {
     gap: 12,
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
   },
   statusChip: {
     backgroundColor: colors.void,
-    borderColor: colors.yellow,
+    borderColor: colors.lineStrong,
     borderRadius: 999,
     borderWidth: 1,
     paddingHorizontal: 10,
@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.text,
-    fontSize: 36,
+    fontSize: 34,
     fontWeight: "900",
     textShadowColor: colors.void,
     textShadowOffset: { height: 3, width: 3 },
@@ -321,24 +321,24 @@ const styles = StyleSheet.create({
   },
   monogram: {
     alignItems: "center",
-    backgroundColor: colors.yellow,
-    borderColor: colors.text,
+    backgroundColor: colors.surfaceHigh,
+    borderColor: colors.yellow,
     borderRadius: 18,
     borderWidth: 2,
     height: 52,
     justifyContent: "center",
     width: 52,
   },
-  monogramText: { color: colors.void, fontSize: 16, fontWeight: "900" },
+  monogramText: { color: colors.yellow, fontSize: 16, fontWeight: "900" },
   playerMeta: { flex: 1, gap: 3 },
   playerName: { color: colors.text, fontSize: 18, fontWeight: "900" },
   playerLevel: { color: colors.muted, fontSize: 13, fontWeight: "800" },
   packStage: {
     alignItems: "center",
-    backgroundColor: "rgba(3, 4, 10, 0.78)",
-    borderColor: colors.electric,
+    backgroundColor: colors.surface,
+    borderColor: colors.lineStrong,
     borderRadius: radius.lg,
-    borderWidth: 2,
+    borderWidth: 1,
     minHeight: 292,
     justifyContent: "center",
     overflow: "hidden",
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
   },
   muted: { color: colors.muted, fontSize: 14, lineHeight: 20 },
   progressTrack: {
-    backgroundColor: "rgba(5, 7, 13, 0.5)",
+    backgroundColor: colors.surface,
     borderRadius: 999,
     height: 8,
     overflow: "hidden",
