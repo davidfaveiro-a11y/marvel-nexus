@@ -1,72 +1,68 @@
+import { Image } from "expo-image";
 import { StyleSheet, Text, View } from "react-native";
 import { colors, radius, shadows } from "../theme/tokens";
+
+const heroImages = [
+  {
+    name: "Iron Man",
+    uri: "https://cdn.marvel.com/content/2x/002irm_ons_mas_mob_01_0.webp",
+  },
+  {
+    name: "Spider-Man",
+    uri: "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/lg/620-spider-man.jpg",
+  },
+  {
+    name: "Wolverine",
+    uri: "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/images/lg/717-wolverine.jpg",
+  },
+];
 
 export function NexusPack({ compact = false }: { compact?: boolean }) {
   return (
     <View style={[styles.stage, compact ? styles.stageCompact : null]}>
-      <View style={styles.auraOuter} />
-      <View style={styles.auraInner} />
-      <View style={styles.floorShadow} />
-
-      <View style={styles.capsuleBack}>
-        <View style={styles.backStripeOne} />
-        <View style={styles.backStripeTwo} />
-      </View>
-
-      <View style={styles.capsule}>
-        <View style={styles.sideRailLeft} />
-        <View style={styles.sideRailRight} />
-
-        <View style={styles.topClamp}>
-          <View style={styles.clampBolt} />
-          <Text style={styles.dropText}>DROP</Text>
-          <View style={styles.clampBolt} />
+      <View style={styles.shadow} />
+      <View style={styles.goldBackplate} />
+      <View style={styles.pack}>
+        <View style={styles.topStripe}>
+          <Text style={styles.marvelText}>MARVEL NEXUS</Text>
         </View>
 
-        <View style={styles.window}>
-          <View style={styles.windowGlow} />
-          <View style={styles.scanLineTop} />
-          <View style={styles.scanLineBottom} />
-
-          <View style={styles.sealedCard}>
-            <View style={styles.cardCornerTop} />
-            <View style={styles.cardCornerBottom} />
-            <View style={styles.cardPanel}>
-              <View style={styles.heroSignal} />
-              <Text style={styles.heroN}>N</Text>
+        <View style={styles.heroStrip}>
+          {heroImages.map((hero, index) => (
+            <View
+              key={hero.name}
+              style={[
+                styles.heroFrame,
+                index === 1 ? styles.heroFrameCenter : null,
+                index === 0 ? styles.heroFrameLeft : null,
+                index === 2 ? styles.heroFrameRight : null,
+              ]}
+            >
+              <Image
+                accessibilityLabel={hero.name}
+                contentFit="cover"
+                contentPosition="top center"
+                source={{ uri: hero.uri }}
+                style={styles.heroImage}
+              />
+              <View style={styles.heroShade} />
             </View>
-            <View style={styles.cardNamePlate}>
-              <Text style={styles.cardNameText}>HERO LOCK</Text>
-            </View>
-          </View>
-
-          <View style={styles.energyArcLeft} />
-          <View style={styles.energyArcRight} />
+          ))}
         </View>
 
-        <View style={styles.lockRow}>
-          <View style={styles.lockPlate}>
-            <View style={styles.lockCore}>
-              <Text style={styles.lockText}>01</Text>
-            </View>
-          </View>
-          <View style={styles.statusPanel}>
-            <Text style={styles.statusText}>NEXUS VAULT</Text>
-            <View style={styles.statusBars}>
-              <View style={[styles.statusBar, { backgroundColor: colors.yellow, width: "82%" }]} />
-              <View style={[styles.statusBar, { backgroundColor: colors.electric, width: "58%" }]} />
-              <View style={[styles.statusBar, { backgroundColor: colors.red, width: "70%" }]} />
-            </View>
-          </View>
+        <View style={styles.titleBlock}>
+          <Text style={styles.packTitle}>HERO PACK</Text>
+          <Text style={styles.packSubtitle}>Premium Drop</Text>
         </View>
 
-        <View style={styles.bottomClamp}>
-          <View style={styles.pipGroup}>
-            <View style={[styles.pip, { backgroundColor: colors.red }]} />
-            <View style={[styles.pip, { backgroundColor: colors.yellow }]} />
-            <View style={[styles.pip, { backgroundColor: colors.electric }]} />
+        <View style={styles.bottomPanel}>
+          <View>
+            <Text style={styles.smallLabel}>1 carte garantie</Text>
+            <Text style={styles.smallMuted}>Rarete aleatoire</Text>
           </View>
-          <Text style={styles.openText}>TAP TO OPEN</Text>
+          <View style={styles.seal}>
+            <Text style={styles.sealText}>N</Text>
+          </View>
         </View>
       </View>
     </View>
@@ -76,320 +72,159 @@ export function NexusPack({ compact = false }: { compact?: boolean }) {
 const styles = StyleSheet.create({
   stage: {
     alignItems: "center",
-    aspectRatio: 0.78,
+    aspectRatio: 0.74,
     justifyContent: "center",
-    width: 204,
+    width: 198,
   },
   stageCompact: {
-    width: 148,
+    width: 142,
   },
-  auraOuter: {
-    backgroundColor: colors.electric,
-    borderRadius: 999,
-    height: "76%",
-    opacity: 0.14,
-    position: "absolute",
-    width: "92%",
-  },
-  auraInner: {
-    backgroundColor: colors.yellow,
-    borderRadius: 999,
-    height: "48%",
-    opacity: 0.18,
-    position: "absolute",
-    width: "58%",
-  },
-  floorShadow: {
+  shadow: {
     backgroundColor: "rgba(0, 0, 0, 0.48)",
     borderRadius: 999,
-    bottom: 2,
-    height: 22,
+    bottom: 0,
+    height: 24,
     position: "absolute",
-    transform: [{ scaleX: 1.18 }],
-    width: "72%",
+    transform: [{ scaleX: 1.12 }],
+    width: "74%",
   },
-  capsuleBack: {
-    backgroundColor: colors.crimson,
+  goldBackplate: {
+    backgroundColor: colors.yellow,
     borderColor: colors.text,
     borderRadius: radius.lg,
     borderWidth: 2,
-    height: "86%",
-    overflow: "hidden",
+    height: "90%",
     position: "absolute",
-    transform: [{ rotate: "-4deg" }],
-    width: "72%",
+    transform: [{ rotate: "4deg" }, { translateX: 6 }],
+    width: "75%",
   },
-  backStripeOne: {
-    backgroundColor: colors.yellow,
-    height: "140%",
-    left: 18,
-    opacity: 0.9,
-    position: "absolute",
-    top: -42,
-    transform: [{ rotate: "17deg" }],
-    width: 18,
-  },
-  backStripeTwo: {
-    backgroundColor: colors.electric,
-    height: "140%",
-    opacity: 0.55,
-    position: "absolute",
-    right: 28,
-    top: -42,
-    transform: [{ rotate: "17deg" }],
-    width: 10,
-  },
-  capsule: {
+  pack: {
     ...shadows.ambient,
-    backgroundColor: colors.panel,
-    borderColor: colors.yellow,
+    backgroundColor: "#080A12",
+    borderColor: colors.text,
     borderRadius: radius.lg,
     borderWidth: 3,
-    height: "92%",
+    height: "93%",
     overflow: "hidden",
-    padding: 12,
     width: "78%",
   },
-  sideRailLeft: {
-    backgroundColor: colors.red,
-    bottom: 18,
-    left: 0,
-    position: "absolute",
-    top: 18,
-    width: 6,
-  },
-  sideRailRight: {
-    backgroundColor: colors.electric,
-    bottom: 18,
-    opacity: 0.75,
-    position: "absolute",
-    right: 0,
-    top: 18,
-    width: 6,
-  },
-  topClamp: {
+  topStripe: {
     alignItems: "center",
-    backgroundColor: colors.void,
-    borderColor: colors.text,
-    borderRadius: radius.md,
-    borderWidth: 2,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    minHeight: 34,
-    paddingHorizontal: 10,
+    backgroundColor: colors.crimson,
+    borderBottomColor: colors.yellow,
+    borderBottomWidth: 2,
+    minHeight: 36,
+    justifyContent: "center",
   },
-  clampBolt: {
-    backgroundColor: colors.yellow,
-    borderColor: colors.text,
-    borderRadius: 999,
-    borderWidth: 1,
-    height: 10,
-    width: 10,
-  },
-  dropText: {
+  marvelText: {
     color: colors.text,
     fontSize: 13,
     fontWeight: "900",
-    textShadowColor: colors.red,
+    textShadowColor: colors.void,
     textShadowOffset: { height: 1, width: 1 },
     textShadowRadius: 0,
   },
-  window: {
-    alignItems: "center",
-    backgroundColor: "rgba(0, 212, 255, 0.1)",
-    borderColor: colors.lineStrong,
-    borderRadius: radius.lg,
-    borderWidth: 2,
-    flex: 1,
-    justifyContent: "center",
+  heroStrip: {
+    height: 132,
+    marginHorizontal: 10,
     marginTop: 12,
-    overflow: "hidden",
+    position: "relative",
   },
-  windowGlow: {
-    backgroundColor: colors.electric,
-    borderRadius: 999,
-    height: 132,
-    opacity: 0.2,
-    position: "absolute",
-    width: 132,
-  },
-  scanLineTop: {
-    backgroundColor: "rgba(255, 228, 92, 0.42)",
-    height: 3,
-    left: 12,
-    position: "absolute",
-    right: 12,
-    top: 20,
-  },
-  scanLineBottom: {
-    backgroundColor: "rgba(255, 255, 255, 0.24)",
-    bottom: 24,
-    height: 2,
-    left: 26,
-    position: "absolute",
-    right: 26,
-  },
-  sealedCard: {
-    alignItems: "center",
-    backgroundColor: colors.text,
-    borderColor: colors.void,
-    borderRadius: radius.md,
-    borderWidth: 3,
-    height: 132,
-    justifyContent: "center",
-    overflow: "hidden",
-    transform: [{ rotate: "-3deg" }],
-    width: 92,
-  },
-  cardCornerTop: {
-    backgroundColor: colors.red,
-    height: 56,
-    left: -20,
-    position: "absolute",
-    top: -28,
-    transform: [{ rotate: "38deg" }],
-    width: 56,
-  },
-  cardCornerBottom: {
-    backgroundColor: colors.yellow,
-    bottom: -30,
-    height: 64,
-    position: "absolute",
-    right: -22,
-    transform: [{ rotate: "38deg" }],
-    width: 64,
-  },
-  cardPanel: {
-    alignItems: "center",
-    backgroundColor: colors.void,
-    borderColor: colors.electric,
-    borderRadius: radius.md,
-    borderWidth: 2,
-    height: 76,
-    justifyContent: "center",
-    width: 62,
-  },
-  heroSignal: {
-    backgroundColor: colors.yellow,
-    borderRadius: 999,
-    height: 46,
-    opacity: 0.2,
-    position: "absolute",
-    width: 46,
-  },
-  heroN: {
-    color: colors.text,
-    fontSize: 36,
-    fontWeight: "900",
-  },
-  cardNamePlate: {
-    backgroundColor: colors.void,
-    borderRadius: 5,
-    bottom: 10,
-    left: 10,
-    paddingVertical: 3,
-    position: "absolute",
-    right: 10,
-  },
-  cardNameText: {
-    color: colors.yellow,
-    fontSize: 8,
-    fontWeight: "900",
-    textAlign: "center",
-  },
-  energyArcLeft: {
+  heroFrame: {
+    backgroundColor: colors.panel,
     borderColor: colors.yellow,
-    borderLeftWidth: 4,
-    borderRadius: 999,
-    borderTopWidth: 4,
-    height: 62,
-    left: 12,
-    position: "absolute",
-    transform: [{ rotate: "-38deg" }],
-    width: 62,
-  },
-  energyArcRight: {
-    borderBottomWidth: 4,
-    borderColor: colors.red,
-    borderRadius: 999,
-    borderRightWidth: 4,
-    height: 62,
-    position: "absolute",
-    right: 12,
-    transform: [{ rotate: "-38deg" }],
-    width: 62,
-  },
-  lockRow: {
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 8,
-    marginTop: 10,
-  },
-  lockPlate: {
-    alignItems: "center",
-    backgroundColor: colors.yellow,
-    borderColor: colors.text,
     borderRadius: radius.md,
     borderWidth: 2,
-    height: 42,
-    justifyContent: "center",
-    width: 42,
+    bottom: 0,
+    overflow: "hidden",
+    position: "absolute",
+    top: 0,
+    width: 68,
   },
-  lockCore: {
+  heroFrameLeft: {
+    left: 0,
+    transform: [{ rotate: "-7deg" }, { translateY: 10 }],
+  },
+  heroFrameCenter: {
+    alignSelf: "center",
+    left: "50%",
+    marginLeft: -38,
+    top: -8,
+    width: 76,
+    zIndex: 3,
+  },
+  heroFrameRight: {
+    right: 0,
+    transform: [{ rotate: "7deg" }, { translateY: 10 }],
+  },
+  heroImage: {
+    height: "100%",
+    width: "100%",
+  },
+  heroShade: {
+    backgroundColor: "rgba(3, 4, 10, 0.18)",
+    bottom: 0,
+    left: 0,
+    position: "absolute",
+    right: 0,
+    top: 0,
+  },
+  titleBlock: {
     alignItems: "center",
-    backgroundColor: colors.void,
-    borderRadius: 999,
-    height: 26,
-    justifyContent: "center",
-    width: 26,
+    borderBottomColor: colors.lineStrong,
+    borderTopColor: colors.lineStrong,
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    marginHorizontal: 12,
+    marginTop: 12,
+    paddingVertical: 10,
   },
-  lockText: {
-    color: colors.yellow,
-    fontSize: 10,
-    fontWeight: "900",
-  },
-  statusPanel: {
-    flex: 1,
-    gap: 4,
-  },
-  statusText: {
+  packTitle: {
     color: colors.text,
-    fontSize: 9,
+    fontSize: 24,
     fontWeight: "900",
+    textShadowColor: colors.red,
+    textShadowOffset: { height: 2, width: 2 },
+    textShadowRadius: 0,
   },
-  statusBars: {
-    gap: 3,
+  packSubtitle: {
+    color: colors.yellow,
+    fontSize: 11,
+    fontWeight: "900",
+    marginTop: 2,
+    textTransform: "uppercase",
   },
-  statusBar: {
-    borderRadius: 999,
-    height: 4,
-  },
-  bottomClamp: {
+  bottomPanel: {
     alignItems: "center",
-    backgroundColor: colors.void,
-    borderColor: colors.lineStrong,
-    borderRadius: radius.md,
-    borderWidth: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10,
-    minHeight: 30,
-    paddingHorizontal: 8,
+    padding: 12,
   },
-  pipGroup: {
-    flexDirection: "row",
-    gap: 4,
+  smallLabel: {
+    color: colors.text,
+    fontSize: 10,
+    fontWeight: "900",
+    textTransform: "uppercase",
   },
-  pip: {
+  smallMuted: {
+    color: colors.muted,
+    fontSize: 9,
+    fontWeight: "800",
+    marginTop: 3,
+  },
+  seal: {
+    alignItems: "center",
+    backgroundColor: colors.yellow,
     borderColor: colors.text,
     borderRadius: 999,
-    borderWidth: 1,
-    height: 8,
-    width: 8,
+    borderWidth: 2,
+    height: 34,
+    justifyContent: "center",
+    width: 34,
   },
-  openText: {
-    color: colors.muted,
-    fontSize: 8,
+  sealText: {
+    color: colors.void,
+    fontSize: 17,
     fontWeight: "900",
   },
 });
