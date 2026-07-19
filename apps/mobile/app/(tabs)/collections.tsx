@@ -167,7 +167,7 @@ export default function CollectionsScreen() {
             <View style={[styles.cardRarityFrame, { borderColor: rarityColor }]}>
               <CardArtwork
                 accentColor={rarityColor}
-                assetId={owned ? item.artwork_asset_id : null}
+                assetId={item.artwork_asset_id}
                 height={76}
                 width={54}
               />
@@ -265,7 +265,7 @@ function CardDetailModal({
                 <View style={[styles.modalArtworkFrame, { borderColor: rarityColor }]}>
                   <CardArtwork
                     accentColor={rarityColor}
-                    assetId={owned ? card.artwork_asset_id : null}
+                    assetId={card.artwork_asset_id}
                     height={260}
                     width={186}
                   />

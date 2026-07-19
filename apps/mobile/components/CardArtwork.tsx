@@ -49,7 +49,8 @@ export function CardArtwork({
   return (
     <Image
       accessibilityLabel="Illustration de carte"
-      contentFit="cover"
+      contentFit="contain"
+      contentPosition="center"
       source={{ uri: signedUrl.data }}
       style={[styles.image, { height, width }]}
     />

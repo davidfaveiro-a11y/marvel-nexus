@@ -9,7 +9,7 @@ import { PrimaryButton } from "../../components/PrimaryButton";
 import { fetchCards } from "../../features/catalog/api";
 import { openFreePack } from "../../features/pack/api";
 import type { PackResult } from "../../features/pack/api";
-import { fetchPlayerStats, fetchProfile, fetchRecentOpenings } from "../../features/player/api";
+import { fetchPlayerStats, fetchProfile } from "../../features/player/api";
 import { usePreferencesStore } from "../../store/preferences";
 import { colors, radius, shadows } from "../../theme/tokens";
 
@@ -35,7 +35,6 @@ export default function HomeScreen() {
   const revealProgress = useSharedValue(0);
   const profile = useQuery({ queryKey: ["profile"], queryFn: fetchProfile });
   const stats = useQuery({ queryKey: ["player-stats"], queryFn: fetchPlayerStats });
-  const openings = useQuery({ queryKey: ["recent-openings"], queryFn: fetchRecentOpenings });
   const cards = useQuery({ queryKey: ["cards"], queryFn: fetchCards });
 
   useEffect(() => {
@@ -204,24 +203,6 @@ export default function HomeScreen() {
         <Metric label="Top rarete" value={stats.data?.highestRarity ?? "-"} accent="violet" />
       </View>
 
-      <View style={styles.historyPanel}>
-        <Text style={styles.panelKicker}>Derniers drops</Text>
-        {(openings.data ?? []).length === 0 ? (
-          <Text style={styles.muted}>Aucun booster ouvert pour le moment.</Text>
-        ) : (
-          (openings.data ?? []).map((opening) => (
-            <View style={styles.openingRow} key={opening.id}>
-              <Text style={styles.openingDate}>
-                {new Date(opening.opened_at).toLocaleString("fr-FR")}
-              </Text>
-              <Text style={styles.openingGain}>
-                +{opening.xp_gained} XP
-                {opening.fragments_gained ? `  +${opening.fragments_gained} fragments` : ""}
-              </Text>
-            </View>
-          ))
-        )}
-      </View>
     </ScrollView>
   );
 }

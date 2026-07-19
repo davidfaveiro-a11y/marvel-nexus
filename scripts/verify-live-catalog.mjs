@@ -25,7 +25,7 @@ const admin = createClient(supabaseUrl, serviceRoleKey, {
 
 const { data, error } = await admin
   .from("cards")
-  .select("id,is_active,characters(name),collections(name)")
+  .select("id,is_active,artwork_asset_id,characters(name),collections(name)")
   .eq("is_active", true);
 
 if (error) throw error;
@@ -49,10 +49,12 @@ for (const card of data ?? []) {
 }
 
 const duplicates = [...byCharacter.entries()].filter(([, collections]) => collections.length > 1);
+const missingArtwork = (data ?? []).filter((card) => !card.artwork_asset_id);
 
 console.log(JSON.stringify(Object.fromEntries([...byCollection.entries()].sort()), null, 2));
 console.log(`activeCards=${data?.length ?? 0}`);
 console.log(`duplicateCharacters=${duplicates.length}`);
+console.log(`missingArtwork=${missingArtwork.length}`);
 
 if ((data?.length ?? 0) !== 240) {
   throw new Error(`Expected 240 active cards, got ${data?.length ?? 0}`);
@@ -67,4 +69,8 @@ for (const [collectionName, count] of byCollection) {
 if (duplicates.length > 0) {
   console.log(JSON.stringify(duplicates, null, 2));
   throw new Error("Live catalog has duplicate characters");
+}
+
+if (missingArtwork.length > 0) {
+  throw new Error(`Expected every active card to have artwork, got ${missingArtwork.length} missing`);
 }
