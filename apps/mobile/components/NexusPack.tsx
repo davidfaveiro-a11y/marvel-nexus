@@ -3,60 +3,70 @@ import { colors, radius, shadows } from "../theme/tokens";
 
 export function NexusPack({ compact = false }: { compact?: boolean }) {
   return (
-    <View style={[styles.frame, compact ? styles.frameCompact : null]}>
-      <View style={styles.backGlow} />
-      <View style={styles.backPlateRed} />
-      <View style={styles.backPlateGold} />
-      <View style={styles.shadowCard} />
-      <View style={styles.pack}>
-        <View style={styles.foilBase} />
-        <View style={styles.redSlashWide} />
-        <View style={styles.redSlashThin} />
-        <View style={styles.goldSlash} />
-        <View style={styles.bluePanel} />
-        <View style={styles.whiteGlint} />
-        <View style={styles.cornerCutTop} />
-        <View style={styles.cornerCutBottom} />
+    <View style={[styles.stage, compact ? styles.stageCompact : null]}>
+      <View style={styles.auraOuter} />
+      <View style={styles.auraInner} />
+      <View style={styles.floorShadow} />
 
-        <View style={styles.topBand}>
-          <Text style={styles.marvelTag}>PRIVATE DROP</Text>
-          <View style={styles.issueBadge}>
-            <Text style={styles.issueText}>#01</Text>
+      <View style={styles.capsuleBack}>
+        <View style={styles.backStripeOne} />
+        <View style={styles.backStripeTwo} />
+      </View>
+
+      <View style={styles.capsule}>
+        <View style={styles.sideRailLeft} />
+        <View style={styles.sideRailRight} />
+
+        <View style={styles.topClamp}>
+          <View style={styles.clampBolt} />
+          <Text style={styles.dropText}>DROP</Text>
+          <View style={styles.clampBolt} />
+        </View>
+
+        <View style={styles.window}>
+          <View style={styles.windowGlow} />
+          <View style={styles.scanLineTop} />
+          <View style={styles.scanLineBottom} />
+
+          <View style={styles.sealedCard}>
+            <View style={styles.cardCornerTop} />
+            <View style={styles.cardCornerBottom} />
+            <View style={styles.cardPanel}>
+              <View style={styles.heroSignal} />
+              <Text style={styles.heroN}>N</Text>
+            </View>
+            <View style={styles.cardNamePlate}>
+              <Text style={styles.cardNameText}>HERO LOCK</Text>
+            </View>
+          </View>
+
+          <View style={styles.energyArcLeft} />
+          <View style={styles.energyArcRight} />
+        </View>
+
+        <View style={styles.lockRow}>
+          <View style={styles.lockPlate}>
+            <View style={styles.lockCore}>
+              <Text style={styles.lockText}>01</Text>
+            </View>
+          </View>
+          <View style={styles.statusPanel}>
+            <Text style={styles.statusText}>NEXUS VAULT</Text>
+            <View style={styles.statusBars}>
+              <View style={[styles.statusBar, { backgroundColor: colors.yellow, width: "82%" }]} />
+              <View style={[styles.statusBar, { backgroundColor: colors.electric, width: "58%" }]} />
+              <View style={[styles.statusBar, { backgroundColor: colors.red, width: "70%" }]} />
+            </View>
           </View>
         </View>
 
-        <View style={styles.titleStack}>
-          <Text style={styles.packLabel}>NEXUS</Text>
-          <Text style={styles.subLabel}>HERO SERIES</Text>
-        </View>
-
-        <View style={styles.heroMedallion}>
-          <View style={styles.medallionGlow} />
-          <View style={styles.medallionRing} />
-          <Text style={styles.medallionN}>N</Text>
-          <View style={styles.lightningLeft} />
-          <View style={styles.lightningRight} />
-        </View>
-
-        <View style={styles.heroDropBadge}>
-          <Text style={styles.heroDrop}>HERO DROP</Text>
-        </View>
-        <Text style={styles.collectorText}>1 CARTE GARANTIE</Text>
-
-        <View style={styles.bottomBlock}>
-          <View style={styles.barcode}>
-            {Array.from({ length: 8 }).map((_, index) => (
-              <View
-                key={index}
-                style={[styles.barcodeLine, index % 3 === 0 ? styles.barcodeLineTall : null]}
-              />
-            ))}
+        <View style={styles.bottomClamp}>
+          <View style={styles.pipGroup}>
+            <View style={[styles.pip, { backgroundColor: colors.red }]} />
+            <View style={[styles.pip, { backgroundColor: colors.yellow }]} />
+            <View style={[styles.pip, { backgroundColor: colors.electric }]} />
           </View>
-          <View style={styles.powerPips}>
-            <View style={[styles.powerPip, { backgroundColor: colors.yellow }]} />
-            <View style={[styles.powerPip, { backgroundColor: colors.red }]} />
-            <View style={[styles.powerPip, { backgroundColor: colors.electric }]} />
-          </View>
+          <Text style={styles.openText}>TAP TO OPEN</Text>
         </View>
       </View>
     </View>
@@ -64,302 +74,322 @@ export function NexusPack({ compact = false }: { compact?: boolean }) {
 }
 
 const styles = StyleSheet.create({
-  frame: {
+  stage: {
     alignItems: "center",
-    aspectRatio: 0.72,
+    aspectRatio: 0.78,
     justifyContent: "center",
-    width: 188,
+    width: 204,
   },
-  frameCompact: {
-    width: 136,
+  stageCompact: {
+    width: 148,
   },
-  backGlow: {
+  auraOuter: {
+    backgroundColor: colors.electric,
+    borderRadius: 999,
+    height: "76%",
+    opacity: 0.14,
+    position: "absolute",
+    width: "92%",
+  },
+  auraInner: {
     backgroundColor: colors.yellow,
     borderRadius: 999,
-    height: "72%",
+    height: "48%",
     opacity: 0.18,
     position: "absolute",
-    transform: [{ scaleX: 0.86 }],
-    width: "86%",
+    width: "58%",
   },
-  backPlateRed: {
-    backgroundColor: colors.crimson,
-    borderColor: colors.yellow,
-    borderRadius: radius.lg,
-    borderWidth: 2,
-    height: "91%",
+  floorShadow: {
+    backgroundColor: "rgba(0, 0, 0, 0.48)",
+    borderRadius: 999,
+    bottom: 2,
+    height: 22,
     position: "absolute",
-    transform: [{ rotate: "-8deg" }, { translateY: 8 }],
-    width: "74%",
-  },
-  backPlateGold: {
-    backgroundColor: colors.yellow,
-    borderColor: colors.text,
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    height: "86%",
-    opacity: 0.95,
-    position: "absolute",
-    transform: [{ rotate: "6deg" }, { translateX: 7 }],
-    width: "70%",
-  },
-  shadowCard: {
-    backgroundColor: "rgba(0, 0, 0, 0.42)",
-    borderRadius: radius.lg,
-    bottom: 12,
-    height: "82%",
-    position: "absolute",
-    transform: [{ rotate: "3deg" }],
+    transform: [{ scaleX: 1.18 }],
     width: "72%",
   },
-  pack: {
-    ...shadows.ambient,
-    backgroundColor: colors.panel,
+  capsuleBack: {
+    backgroundColor: colors.crimson,
     borderColor: colors.text,
     borderRadius: radius.lg,
-    borderWidth: 3,
-    height: "94%",
+    borderWidth: 2,
+    height: "86%",
     overflow: "hidden",
-    padding: 12,
-    width: "80%",
-  },
-  foilBase: {
-    backgroundColor: colors.blue,
-    bottom: 0,
-    left: 0,
-    opacity: 0.92,
     position: "absolute",
-    right: 0,
-    top: 0,
+    transform: [{ rotate: "-4deg" }],
+    width: "72%",
   },
-  redSlashWide: {
-    backgroundColor: colors.crimson,
-    height: "136%",
-    left: -40,
+  backStripeOne: {
+    backgroundColor: colors.yellow,
+    height: "140%",
+    left: 18,
+    opacity: 0.9,
     position: "absolute",
-    top: -30,
-    transform: [{ rotate: "19deg" }],
-    width: "50%",
+    top: -42,
+    transform: [{ rotate: "17deg" }],
+    width: 18,
   },
-  redSlashThin: {
-    backgroundColor: colors.red,
-    height: "120%",
-    opacity: 0.86,
+  backStripeTwo: {
+    backgroundColor: colors.electric,
+    height: "140%",
+    opacity: 0.55,
     position: "absolute",
     right: 28,
-    top: -22,
-    transform: [{ rotate: "19deg" }],
+    top: -42,
+    transform: [{ rotate: "17deg" }],
     width: 10,
   },
-  goldSlash: {
-    backgroundColor: colors.yellow,
-    height: "64%",
-    opacity: 0.98,
-    position: "absolute",
-    right: -26,
-    top: -18,
-    transform: [{ rotate: "-22deg" }],
-    width: "48%",
+  capsule: {
+    ...shadows.ambient,
+    backgroundColor: colors.panel,
+    borderColor: colors.yellow,
+    borderRadius: radius.lg,
+    borderWidth: 3,
+    height: "92%",
+    overflow: "hidden",
+    padding: 12,
+    width: "78%",
   },
-  bluePanel: {
-    backgroundColor: "rgba(0, 212, 255, 0.18)",
-    borderColor: "rgba(255, 255, 255, 0.24)",
+  sideRailLeft: {
+    backgroundColor: colors.red,
+    bottom: 18,
+    left: 0,
+    position: "absolute",
+    top: 18,
+    width: 6,
+  },
+  sideRailRight: {
+    backgroundColor: colors.electric,
+    bottom: 18,
+    opacity: 0.75,
+    position: "absolute",
+    right: 0,
+    top: 18,
+    width: 6,
+  },
+  topClamp: {
+    alignItems: "center",
+    backgroundColor: colors.void,
+    borderColor: colors.text,
     borderRadius: radius.md,
+    borderWidth: 2,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    minHeight: 34,
+    paddingHorizontal: 10,
+  },
+  clampBolt: {
+    backgroundColor: colors.yellow,
+    borderColor: colors.text,
+    borderRadius: 999,
     borderWidth: 1,
-    bottom: 46,
+    height: 10,
+    width: 10,
+  },
+  dropText: {
+    color: colors.text,
+    fontSize: 13,
+    fontWeight: "900",
+    textShadowColor: colors.red,
+    textShadowOffset: { height: 1, width: 1 },
+    textShadowRadius: 0,
+  },
+  window: {
+    alignItems: "center",
+    backgroundColor: "rgba(0, 212, 255, 0.1)",
+    borderColor: colors.lineStrong,
+    borderRadius: radius.lg,
+    borderWidth: 2,
+    flex: 1,
+    justifyContent: "center",
+    marginTop: 12,
+    overflow: "hidden",
+  },
+  windowGlow: {
+    backgroundColor: colors.electric,
+    borderRadius: 999,
+    height: 132,
+    opacity: 0.2,
+    position: "absolute",
+    width: 132,
+  },
+  scanLineTop: {
+    backgroundColor: "rgba(255, 228, 92, 0.42)",
+    height: 3,
     left: 12,
     position: "absolute",
     right: 12,
-    top: 70,
+    top: 20,
   },
-  whiteGlint: {
-    backgroundColor: "rgba(255, 255, 255, 0.28)",
-    height: "76%",
-    opacity: 0.85,
+  scanLineBottom: {
+    backgroundColor: "rgba(255, 255, 255, 0.24)",
+    bottom: 24,
+    height: 2,
+    left: 26,
     position: "absolute",
-    right: 28,
-    top: -38,
-    transform: [{ rotate: "22deg" }],
-    width: 10,
+    right: 26,
   },
-  cornerCutTop: {
+  sealedCard: {
+    alignItems: "center",
     backgroundColor: colors.text,
-    height: 42,
+    borderColor: colors.void,
+    borderRadius: radius.md,
+    borderWidth: 3,
+    height: 132,
+    justifyContent: "center",
+    overflow: "hidden",
+    transform: [{ rotate: "-3deg" }],
+    width: 92,
+  },
+  cardCornerTop: {
+    backgroundColor: colors.red,
+    height: 56,
     left: -20,
     position: "absolute",
-    top: -24,
-    transform: [{ rotate: "45deg" }],
-    width: 42,
+    top: -28,
+    transform: [{ rotate: "38deg" }],
+    width: 56,
   },
-  cornerCutBottom: {
+  cardCornerBottom: {
     backgroundColor: colors.yellow,
-    bottom: -24,
-    height: 44,
+    bottom: -30,
+    height: 64,
     position: "absolute",
     right: -22,
-    transform: [{ rotate: "45deg" }],
-    width: 44,
+    transform: [{ rotate: "38deg" }],
+    width: 64,
   },
-  topBand: {
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    minHeight: 24,
-  },
-  marvelTag: {
-    backgroundColor: colors.text,
-    borderRadius: 4,
-    color: colors.crimson,
-    fontSize: 8,
-    fontWeight: "900",
-    letterSpacing: 0,
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-  },
-  issueBadge: {
+  cardPanel: {
     alignItems: "center",
     backgroundColor: colors.void,
-    borderColor: colors.yellow,
+    borderColor: colors.electric,
+    borderRadius: radius.md,
+    borderWidth: 2,
+    height: 76,
+    justifyContent: "center",
+    width: 62,
+  },
+  heroSignal: {
+    backgroundColor: colors.yellow,
     borderRadius: 999,
-    borderWidth: 1,
+    height: 46,
+    opacity: 0.2,
+    position: "absolute",
+    width: 46,
+  },
+  heroN: {
+    color: colors.text,
+    fontSize: 36,
+    fontWeight: "900",
+  },
+  cardNamePlate: {
+    backgroundColor: colors.void,
+    borderRadius: 5,
+    bottom: 10,
+    left: 10,
+    paddingVertical: 3,
+    position: "absolute",
+    right: 10,
+  },
+  cardNameText: {
+    color: colors.yellow,
+    fontSize: 8,
+    fontWeight: "900",
+    textAlign: "center",
+  },
+  energyArcLeft: {
+    borderColor: colors.yellow,
+    borderLeftWidth: 4,
+    borderRadius: 999,
+    borderTopWidth: 4,
+    height: 62,
+    left: 12,
+    position: "absolute",
+    transform: [{ rotate: "-38deg" }],
+    width: 62,
+  },
+  energyArcRight: {
+    borderBottomWidth: 4,
+    borderColor: colors.red,
+    borderRadius: 999,
+    borderRightWidth: 4,
+    height: 62,
+    position: "absolute",
+    right: 12,
+    transform: [{ rotate: "-38deg" }],
+    width: 62,
+  },
+  lockRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 8,
+    marginTop: 10,
+  },
+  lockPlate: {
+    alignItems: "center",
+    backgroundColor: colors.yellow,
+    borderColor: colors.text,
+    borderRadius: radius.md,
+    borderWidth: 2,
+    height: 42,
+    justifyContent: "center",
+    width: 42,
+  },
+  lockCore: {
+    alignItems: "center",
+    backgroundColor: colors.void,
+    borderRadius: 999,
     height: 26,
     justifyContent: "center",
     width: 26,
   },
-  issueText: {
-    color: colors.yellow,
-    fontSize: 9,
-    fontWeight: "900",
-  },
-  titleStack: {
-    marginTop: 13,
-  },
-  packLabel: {
-    color: colors.text,
-    fontSize: 27,
-    fontWeight: "900",
-    textShadowColor: colors.void,
-    textShadowOffset: { height: 3, width: 3 },
-    textShadowRadius: 0,
-  },
-  subLabel: {
+  lockText: {
     color: colors.yellow,
     fontSize: 10,
     fontWeight: "900",
-    marginTop: -2,
-    textTransform: "uppercase",
   },
-  heroMedallion: {
+  statusPanel: {
+    flex: 1,
+    gap: 4,
+  },
+  statusText: {
+    color: colors.text,
+    fontSize: 9,
+    fontWeight: "900",
+  },
+  statusBars: {
+    gap: 3,
+  },
+  statusBar: {
+    borderRadius: 999,
+    height: 4,
+  },
+  bottomClamp: {
     alignItems: "center",
-    alignSelf: "center",
-    backgroundColor: "rgba(5, 7, 13, 0.84)",
-    borderColor: colors.text,
-    borderRadius: 999,
-    borderWidth: 3,
-    height: 88,
-    justifyContent: "center",
-    marginTop: 16,
-    width: 88,
-  },
-  medallionGlow: {
-    ...shadows.glowBlue,
-    backgroundColor: "rgba(255, 228, 92, 0.34)",
-    borderRadius: 999,
-    height: 66,
-    position: "absolute",
-    width: 66,
-  },
-  medallionRing: {
-    borderColor: colors.yellow,
-    borderRadius: 999,
-    borderWidth: 2,
-    height: 62,
-    opacity: 0.9,
-    position: "absolute",
-    width: 62,
-  },
-  medallionN: {
-    color: colors.text,
-    fontSize: 38,
-    fontWeight: "900",
-    textShadowColor: colors.red,
-    textShadowOffset: { height: 2, width: 2 },
-    textShadowRadius: 0,
-  },
-  lightningLeft: {
-    backgroundColor: colors.yellow,
-    height: 28,
-    left: 18,
-    position: "absolute",
-    top: 31,
-    transform: [{ rotate: "28deg" }],
-    width: 5,
-  },
-  lightningRight: {
-    backgroundColor: colors.electric,
-    height: 28,
-    position: "absolute",
-    right: 18,
-    top: 31,
-    transform: [{ rotate: "28deg" }],
-    width: 5,
-  },
-  heroDropBadge: {
-    alignSelf: "center",
     backgroundColor: colors.void,
-    borderColor: colors.text,
-    borderRadius: 8,
-    borderWidth: 2,
-    marginTop: 14,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-  },
-  heroDrop: {
-    color: colors.yellow,
-    fontSize: 12,
-    fontWeight: "900",
-  },
-  collectorText: {
-    alignSelf: "center",
-    color: colors.text,
-    fontSize: 8,
-    fontWeight: "900",
-    marginTop: 6,
-    opacity: 0.78,
-  },
-  bottomBlock: {
-    alignItems: "flex-end",
-    bottom: 12,
+    borderColor: colors.lineStrong,
+    borderRadius: radius.md,
+    borderWidth: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    left: 12,
-    position: "absolute",
-    right: 12,
+    marginTop: 10,
+    minHeight: 30,
+    paddingHorizontal: 8,
   },
-  barcode: {
-    alignItems: "flex-end",
-    flexDirection: "row",
-    gap: 2,
-    height: 20,
-  },
-  barcodeLine: {
-    backgroundColor: colors.text,
-    height: 12,
-    opacity: 0.86,
-    width: 2,
-  },
-  barcodeLineTall: {
-    height: 18,
-  },
-  powerPips: {
+  pipGroup: {
     flexDirection: "row",
     gap: 4,
   },
-  powerPip: {
+  pip: {
     borderColor: colors.text,
     borderRadius: 999,
     borderWidth: 1,
-    height: 9,
-    width: 9,
+    height: 8,
+    width: 8,
+  },
+  openText: {
+    color: colors.muted,
+    fontSize: 8,
+    fontWeight: "900",
   },
 });
