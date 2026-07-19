@@ -1,16 +1,32 @@
-import { useQuery } from "@tanstack/react-query";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Image } from "expo-image";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { NexusPack } from "../../components/NexusPack";
-import { fetchPlayerStats, fetchProfile, fetchRecentOpenings } from "../../features/player/api";
+import {
+  fetchPlayerStats,
+  fetchProfile,
+  fetchRecentOpenings,
+  updateProfileAvatar,
+} from "../../features/player/api";
+import { profileAvatars, resolveProfileAvatar } from "../../features/player/avatars";
 import { colors, radius, shadows } from "../../theme/tokens";
 
 export default function ProfileScreen() {
+  const queryClient = useQueryClient();
   const profile = useQuery({ queryKey: ["profile"], queryFn: fetchProfile });
   const stats = useQuery({ queryKey: ["player-stats"], queryFn: fetchPlayerStats });
   const openings = useQuery({ queryKey: ["recent-openings"], queryFn: fetchRecentOpenings });
+  const avatarMutation = useMutation({
+    mutationFn: updateProfileAvatar,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["profile"] }),
+  });
   const xpPercent = profile.data
     ? Math.min(100, Math.round((profile.data.current_xp / profile.data.next_level_xp) * 100))
     : 0;
+  const selectedAvatar = resolveProfileAvatar(
+    profile.data?.avatarHero,
+    profile.data?.avatarImageUrl,
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.screen}>
@@ -22,10 +38,14 @@ export default function ProfileScreen() {
       <View style={styles.hero}>
         <View style={styles.heroBlast} />
         <View style={styles.avatarRing}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>
-              {profile.data?.username?.slice(0, 2).toUpperCase() ?? "MN"}
-            </Text>
+          <View style={[styles.avatar, { borderColor: selectedAvatar.accentColor }]}>
+            <Image
+              accessibilityLabel={`Avatar ${selectedAvatar.heroName}`}
+              contentFit="cover"
+              contentPosition="top center"
+              source={{ uri: selectedAvatar.imageUrl }}
+              style={styles.avatarImage}
+            />
           </View>
         </View>
         <View style={styles.heroText}>
@@ -38,8 +58,50 @@ export default function ProfileScreen() {
               ? new Date(profile.data.created_at).toLocaleDateString("fr-FR")
               : "-"}
           </Text>
+          <View style={styles.heroTag}>
+            <Text style={styles.heroTagText}>{selectedAvatar.heroName}</Text>
+          </View>
         </View>
         <NexusPack compact />
+      </View>
+
+      <View style={styles.avatarPanel}>
+        <View style={styles.panelHeader}>
+          <View>
+            <Text style={styles.panelKicker}>Photo de profil</Text>
+            <Text style={styles.panelTitle}>Choisis ton heros</Text>
+          </View>
+          {avatarMutation.isPending ? <Text style={styles.savingText}>Sauvegarde...</Text> : null}
+        </View>
+        <View style={styles.avatarGrid}>
+          {profileAvatars.map((avatar) => {
+            const selected = selectedAvatar.id === avatar.id;
+            return (
+              <Pressable
+                accessibilityRole="button"
+                disabled={avatarMutation.isPending}
+                key={avatar.id}
+                onPress={() => avatarMutation.mutate(avatar)}
+                style={[
+                  styles.avatarChoice,
+                  selected ? styles.avatarChoiceSelected : null,
+                  { borderColor: selected ? avatar.accentColor : colors.lineStrong },
+                ]}
+              >
+                <Image
+                  accessibilityLabel={avatar.heroName}
+                  contentFit="cover"
+                  contentPosition="top center"
+                  source={{ uri: avatar.imageUrl }}
+                  style={styles.avatarChoiceImage}
+                />
+                <Text numberOfLines={1} adjustsFontSizeToFit style={styles.avatarChoiceName}>
+                  {avatar.heroName}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
       </View>
 
       <View style={styles.progressPanel}>
@@ -164,7 +226,7 @@ const styles = StyleSheet.create({
   },
   avatarRing: {
     alignItems: "center",
-    backgroundColor: colors.red,
+    backgroundColor: colors.void,
     borderColor: colors.text,
     borderRadius: 999,
     borderWidth: 2,
@@ -174,18 +236,81 @@ const styles = StyleSheet.create({
   },
   avatar: {
     alignItems: "center",
-    backgroundColor: colors.yellow,
-    borderColor: colors.text,
+    backgroundColor: colors.panelRaised,
     borderRadius: 999,
-    borderWidth: 2,
+    borderWidth: 3,
     height: 54,
     justifyContent: "center",
+    overflow: "hidden",
     width: 54,
   },
-  avatarText: { color: colors.void, fontSize: 17, fontWeight: "900" },
+  avatarImage: { height: "100%", width: "100%" },
   heroText: { flex: 1, gap: 5, minWidth: 0 },
   username: { color: colors.text, fontSize: 22, fontWeight: "900" },
+  heroTag: {
+    alignSelf: "flex-start",
+    backgroundColor: colors.void,
+    borderColor: colors.yellow,
+    borderRadius: 999,
+    borderWidth: 1,
+    paddingHorizontal: 9,
+    paddingVertical: 3,
+  },
+  heroTagText: {
+    color: colors.yellow,
+    fontSize: 10,
+    fontWeight: "900",
+    textTransform: "uppercase",
+  },
   muted: { color: colors.muted, fontSize: 14, lineHeight: 20 },
+  avatarPanel: {
+    backgroundColor: colors.panelRaised,
+    borderColor: colors.lineStrong,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    gap: 14,
+    padding: 16,
+  },
+  panelHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+  panelTitle: { color: colors.text, fontSize: 20, fontWeight: "900" },
+  savingText: { color: colors.electric, fontSize: 12, fontWeight: "900" },
+  avatarGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+  },
+  avatarChoice: {
+    backgroundColor: colors.surface,
+    borderRadius: radius.md,
+    borderWidth: 2,
+    flexBasis: "30%",
+    flexGrow: 1,
+    gap: 8,
+    minHeight: 128,
+    overflow: "hidden",
+    padding: 7,
+  },
+  avatarChoiceSelected: {
+    backgroundColor: colors.surfaceHigh,
+  },
+  avatarChoiceImage: {
+    backgroundColor: colors.panel,
+    borderRadius: radius.sm,
+    height: 82,
+    width: "100%",
+  },
+  avatarChoiceName: {
+    color: colors.text,
+    fontSize: 11,
+    fontWeight: "900",
+    textAlign: "center",
+    textTransform: "uppercase",
+  },
   progressPanel: {
     backgroundColor: colors.panel,
     borderColor: colors.red,

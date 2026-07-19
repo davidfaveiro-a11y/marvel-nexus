@@ -1,9 +1,12 @@
 import { fetchCards, fetchOwnedCards } from "../catalog/api";
 import { supabase } from "../../lib/supabase";
+import { defaultProfileAvatar, type ProfileAvatar } from "./avatars";
 
 export interface ProfileSummary {
   id: string;
   username: string;
+  avatarHero: string;
+  avatarImageUrl: string;
   level: number;
   total_xp: number;
   current_xp: number;
@@ -41,6 +44,7 @@ export interface LeaderboardPlayer {
 export async function fetchProfile(): Promise<ProfileSummary | null> {
   const { data: user } = await supabase.auth.getUser();
   if (!user.user) return null;
+  const metadata = user.user.user_metadata ?? {};
 
   const { data, error } = await supabase
     .from("profiles")
@@ -51,7 +55,28 @@ export async function fetchProfile(): Promise<ProfileSummary | null> {
     .single();
 
   if (error) throw error;
-  return data;
+  return {
+    ...data,
+    avatarHero:
+      typeof metadata.avatar_hero === "string"
+        ? metadata.avatar_hero
+        : defaultProfileAvatar.heroName,
+    avatarImageUrl:
+      typeof metadata.avatar_image_url === "string"
+        ? metadata.avatar_image_url
+        : defaultProfileAvatar.imageUrl,
+  };
+}
+
+export async function updateProfileAvatar(avatar: ProfileAvatar): Promise<void> {
+  const { error } = await supabase.auth.updateUser({
+    data: {
+      avatar_hero: avatar.heroName,
+      avatar_image_url: avatar.imageUrl,
+    },
+  });
+
+  if (error) throw error;
 }
 
 export async function fetchPlayerStats(): Promise<PlayerStats> {
